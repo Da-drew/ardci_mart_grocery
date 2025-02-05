@@ -1,0 +1,21 @@
+.news-swiper-navi-con div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 34px;
+    width: 34px;
+    outline: none;
+    color: #161925;
+    background-color: #ffffff;
+    border: 1px solid #d7d7d7;
+    border-radius: 4px;
+    z-index: 3;
+    transition: all .21s ease-in-out;
+}
+.news-swiper-navi-con div::after{
+    font-size: 13px !important;
+}
+.shadow-hover:hover{
+    box-shadow: 0 5px 15px rgba(0,0,0,8%);
+}

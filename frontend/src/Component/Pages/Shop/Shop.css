@@ -1,0 +1,18 @@
+.shop-container {
+    display: flex;
+  }
+  
+  .category-filter, .item-list {
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  

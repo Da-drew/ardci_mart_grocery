@@ -1,0 +1,29 @@
+.best-selling-swiper{
+    padding-bottom: 20px;
+}
+.best-selling-swiper .swiper-pagination-bullet{
+    border-radius: 100px;
+    height: 4px;
+    margin: 10px 3px 5px !important;
+    width: 20px;
+    opacity: .13;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+.best-selling-swiper .swiper-pagination-bullet.swiper-pagination-bullet-active{
+    opacity: 1;
+    background-color: #1B8057;
+}
+.best-seller-size{
+    box-shadow: 0 0 0 1px #d7d7d7;
+    transition: all 0.21s ease-in-out;
+}
+.best-seller-size:hover, .best-seller-size:active{
+    box-shadow: 0 0 0 1px #1B8057;
+}
+.best-seller-price-sale{
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 0% 50%);
+}
+/* .best-seller-rating-star{
+
+} */

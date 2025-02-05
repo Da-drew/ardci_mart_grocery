@@ -1,0 +1,94 @@
+.header-main-container{
+    border-top: 3px solid #f8c519;
+}
+
+.navigation .nav-link{
+    font-size: 17px;
+    line-height: 22px;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.nav-link::before {
+    position: absolute;
+    content: "";
+    bottom: -20px;
+    transform: translateY(0);
+    left: 0px;
+    background-color: white;
+    border-radius: 45px;
+    width: 0;
+    height: 2px;
+    transition: all .21s ease-in-out;
+}
+
+.nav-link:hover::before {
+    width: 100%;
+}
+
+.nav-link.active::before{
+    width: 100%;
+}
+
+.hotline-container{
+    background-color: rgba(232, 242, 238, 7%);
+    border: 1px solid rgba(232, 242, 238, .2);
+    border-radius: 6px;
+    padding: 8px 15px;
+}
+
+.number-hotline{
+    transition: all 0.21s;
+    text-decoration: none;
+}
+
+.number-hotline:hover{
+    color: #f8c519;
+}
+
+.social-container ul li a{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    font-size: 14px;
+    border-radius: 50%;
+    border: 1px solid white;
+    color: white;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.social-container ul li a:hover{
+    color: #1b8057;
+    background-color: white;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.651);
+    color: #00000099;
+    padding: 4px 10px;
+    border-radius: 5px;
+    top: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.tooltip::before{
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 43%;
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgba(255, 255, 255, 0.651) transparent;
+    z-index: 1;
+}

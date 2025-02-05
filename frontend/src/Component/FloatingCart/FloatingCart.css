@@ -1,0 +1,30 @@
+/* Custom scrollbar styles for product scroll area */
+.product-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.product-scroll::-webkit-scrollbar-thumb {
+  background-color: #999898; /* Thumb color */
+}
+
+.product-scroll::-webkit-scrollbar-track {
+  background-color: #f7fafc; /* Track color */
+}
+
+.product-scroll {
+  max-height: calc(100vh - 100px);
+}
+
+@keyframes wave-shake {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+  75% { transform: rotate(-10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.wave-shake {
+  animation: wave-shake 0.5s ease;
+}
+
+  
