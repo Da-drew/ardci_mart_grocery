@@ -212,40 +212,12 @@ app.post("/admin/refresh-token", (req, res) => {
       { expiresIn: "15s" } // Short-lived token for logout
     );
 
-    // Update the logout time for the admin in the database (optional)
-    const updateLogoutTimeQuery =
-      "UPDATE admin_user SET logout_time = NOW() WHERE admin_id = ?";
-
-    db.query(updateLogoutTimeQuery, [decoded.adminId], (err) => {
-      if (err) {
-        console.error("Error updating logout time:", err);
-      }
-    });
-
     // Send the new token and adminId to the frontend
     res.status(200).json({ token: newToken, adminId: decoded.adminId });
   } catch (err) {
     res.status(403).json({ message: "Invalid token" });
   }
 });
-
-// Route for admin logout
-// app.post("/admin/logout", authenticateToken, (req, res) => {
-//   const adminId = req.adminId || req.body.adminId;
-
-//   if (!adminId) {
-//     return res.status(400).json({ error: "Admin ID not provided" });
-//   }
-
-//   const logoutTimeQuery =
-//     "UPDATE admin_user SET logout_time = NOW() WHERE admin_id = ?";
-//   db.query(logoutTimeQuery, [adminId], (err) => {
-//     if (err) {
-//       return res.status(500).json({ error: "Database error during logout" });
-//     }
-//     res.status(200).json({ message: "Logout successful" });
-//   });
-// });
 
 app.post("/admin/logout", authenticateToken, (req, res) => {
   const adminId = req.adminId || req.body.adminId; // Use token or fallback to request body

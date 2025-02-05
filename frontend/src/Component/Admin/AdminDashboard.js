@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import TokenExpiryModal from "../Modal/TokenExpiryModal";
@@ -8,7 +8,6 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [adminUsers, setAdminUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
 
   const adminName = localStorage.getItem("adminName");
 
@@ -79,37 +78,32 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     const token = localStorage.getItem("adminToken");
+
     if (token) {
-      const decodedToken = jwtDecode(token);
-      const currentTime = Date.now() / 1000;
-
-      if (decodedToken.exp < currentTime) {
-        console.warn("Token has already expired.");
-        localStorage.removeItem("adminToken");
-        window.location.href = "/admin/login";
-        return;
-      }
-
       try {
+        // Step 1: Attempt to log out using the current token
         await axios.post(
           "http://localhost:8081/admin/logout",
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } catch (error) {
+        // Step 2: If the token is expired (status 403), try refreshing the token
         if (error.response && error.response.status === 403) {
           try {
-            const expiredToken = localStorage.getItem("adminToken");
             const refreshResponse = await axios.post(
               "http://localhost:8081/admin/refresh-token",
-              { expiredToken }
+              { expiredToken: token }
             );
             const newToken = refreshResponse.data.token;
+            const adminId = refreshResponse.data.adminId; // Get adminId from response
+
+            // Step 3: Store the new token and send a logout request with the adminId
             localStorage.setItem("adminToken", newToken);
 
             await axios.post(
               "http://localhost:8081/admin/logout",
-              { adminId: refreshResponse.data.adminId }, // Send adminId directly
+              { adminId }, // Send the adminId to update logout time
               { headers: { Authorization: `Bearer ${newToken}` } }
             );
           } catch (refreshError) {
@@ -119,6 +113,7 @@ const AdminDashboard = () => {
           console.error("Logout failed:", error);
         }
       } finally {
+        // Step 4: Clear localStorage and redirect
         localStorage.removeItem("adminToken");
         localStorage.removeItem("adminName");
         window.location.href = "/admin/login";
