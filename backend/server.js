@@ -189,7 +189,7 @@ app.post("/admin/login", async (req, res) => {
       { adminId: admin.admin_id, username: admin.username },
       "yourSecretKey",
       {
-        expiresIn: "1m",
+        expiresIn: "4h",
       }
     );
     res.status(200).json({ token, admin });
