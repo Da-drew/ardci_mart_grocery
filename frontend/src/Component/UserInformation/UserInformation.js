@@ -16,7 +16,7 @@ const users = [
   },
   {
     id: 2,
-    username: "jane_doe",
+    username: "jane_does",
     password: "securepassword",
     email: "jane@example.com",
     fullName: "Jane Doe",
