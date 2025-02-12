@@ -4,13 +4,19 @@ import { UserContext } from "../UserContext/UserContext";
 import { authenticateUser } from "./Auth";
 import Cookies from "js-cookie";
 import bbg from "../Assets/doodle.png";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import {
+  AiOutlineCloseCircle,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+} from "react-icons/ai";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const { login, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const currentLocation = useLocation();
@@ -54,6 +60,7 @@ const LoginPage = () => {
             </div>
           );
           setPassword("");
+          setIsTyping(false);
         }
       } catch (err) {
         console.error("Login error:", err);
@@ -92,7 +99,7 @@ const LoginPage = () => {
       </div>
 
       {/* Right Section - Login Form */}
-      <div className="login-right w-2/5 flex flex-col justify-center bg-white">
+      <div className="login-right w-2/5 flex flex-col justify-center bg-[#fafafa] relative">
         <div className="right-log">
           <div className="flex flex-col justify-center items-center">
             <h2 className="text-2xl uppercase mb-5 font-bold font-poppins tracking-wider opacity-80">
@@ -111,10 +118,10 @@ const LoginPage = () => {
               onSubmit={handleLogin}
               className="w-full flex flex-col items-center justify-center"
             >
-              <div className="mb-4 w-full flex flex-col items-center justify-center">
+              <div className="mb-4 w-2/4 flex flex-col items-center justify-center">
                 <input
                   type="text"
-                  className="bg-[#c6ffe8] text-gray-900 text-sm  block w-2/4 p-2.5 rounded-full px-7 focus:outline-none focus:drop-shadow"
+                  className="bg-[#c6ffe8] text-gray-900 text-sm  block w-full p-2.5 rounded-full px-7 focus:outline-none focus:drop-shadow"
                   placeholder="Username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -123,15 +130,30 @@ const LoginPage = () => {
               </div>
 
               {/* Password Input */}
-              <div className="mb-2 w-full flex flex-col items-center justify-center">
+              <div className="mb-2 w-2/4 flex flex-col items-center justify-center relative">
                 <input
-                  type="password"
-                  className="bg-[#c6ffe8] text-gray-900 text-sm  block w-2/4 p-2.5 rounded-full px-7 focus:outline-none focus:drop-shadow"
+                  type={showPassword ? "text" : "password"}
+                  className="bg-[#c6ffe8] text-gray-900 text-sm  block w-full p-2.5 rounded-full px-7 focus:outline-none focus:drop-shadow"
                   placeholder="Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setIsTyping(e.target.value.length > 0);
+                  }}
                   required
                 />
+                {isTyping && (
+                  <span
+                    className="absolute right-5 top-2.5 text-gray-600 cursor-pointer select-none"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <AiOutlineEyeInvisible size={20} />
+                    ) : (
+                      <AiOutlineEye size={20} />
+                    )}
+                  </span>
+                )}
               </div>
 
               {/* Remember Me & Forgot Password */}
@@ -157,12 +179,24 @@ const LoginPage = () => {
               {/* Login Button */}
               <button
                 type="submit"
-                className="text-white bg-[#1b8057] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 transition-all w-1/4 drop-shadow"
+                className="text-white bg-[#1b8057] hover:bg-[#1d704f] focus:ring-2 focus:ring-green-700 font-medium rounded-full text-sm px-5 py-2.5 transition-all w-1/4 drop-shadow"
               >
                 Login
               </button>
             </form>
           </div>
+        </div>
+        {/* footer */}
+        <div className="absolute bottom-0 left-0">
+          <footer className="py-3 px-5 text-gray-600">
+            <div className="container mx-auto flex justify-between items-center">
+              <p className="text-xs">ARDCI Mart</p>
+              <p className="text-xs">
+                <span className="ml-1">&copy;</span> {new Date().getFullYear()}{" "}
+                All Rights Reserved
+              </p>
+            </div>
+          </footer>
         </div>
       </div>
     </div>
