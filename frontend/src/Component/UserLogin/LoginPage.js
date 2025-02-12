@@ -1,111 +1,10 @@
-// import React, { useState, useContext } from "react";
-// import { useNavigate, useLocation } from "react-router-dom";
-// import { UserContext } from "../UserContext/UserContext";
-// import { authenticateUser } from "./Auth";
-// import Cookies from "js-cookie";
-
-// const LoginPage = () => {
-//   const [username, setUsername] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [error, setError] = useState("");
-//   const [rememberMe, setRememberMe] = useState(false);
-//   const { login, setUser } = useContext(UserContext);
-//   const navigate = useNavigate();
-//   const currentLocation = useLocation(); // Rename 'location' to 'currentLocation'
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-
-//     if (username && password) {
-//       try {
-//         const user = authenticateUser(username, password);
-
-//         if (user) {
-//           await login(user);
-//           setUser(user);
-
-//           if (rememberMe) {
-//             Cookies.set("userSession", JSON.stringify(user), { expires: 1 });
-//           } else {
-//             Cookies.remove("userSession");
-//           }
-
-//           const slug = localStorage.getItem("pendingSlug"); // No need to parse
-
-//           if (slug) {
-//             navigate(`/shop/${slug}`);
-//             localStorage.removeItem("pendingSlug"); // Remove slug after navigating
-//           } else {
-//             const redirectTo = currentLocation.state?.from?.pathname || "/";
-//             navigate(redirectTo);
-//           }
-//         } else {
-//           setError("Invalid username or password");
-//           setPassword("");
-//         }
-//       } catch (err) {
-//         console.error("Login error:", err);
-//         setError("An error occurred during login");
-//       }
-//     } else {
-//       setError("Please enter both username and password");
-//     }
-//   };
-
-//   return (
-//     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-//       <div className="w-full max-w-sm bg-white shadow-md rounded-lg p-6">
-//         <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
-//         <form onSubmit={handleLogin}>
-//           <input
-//             type="text"
-//             placeholder="Username"
-//             className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             value={username}
-//             onChange={(e) => setUsername(e.target.value)}
-//             required
-//           />
-//           <input
-//             type="password"
-//             placeholder="Password"
-//             className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//             required
-//           />
-//           <div className="flex items-center mb-4">
-//             <input
-//               type="checkbox"
-//               id="rememberMe"
-//               checked={rememberMe}
-//               onChange={() => setRememberMe(!rememberMe)}
-//               className="mr-2"
-//             />
-//             <label htmlFor="rememberMe" className="text-sm">
-//               Remember Me
-//             </label>
-//           </div>
-//           {error && (
-//             <p className="text-red-500 text-sm text-center mb-4">{error}</p>
-//           )}
-//           <button
-//             type="submit"
-//             className="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition-colors"
-//           >
-//             Login
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default LoginPage;
 import React, { useState, useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { UserContext } from "../UserContext/UserContext";
 import { authenticateUser } from "./Auth";
 import Cookies from "js-cookie";
+import bbg from "../Assets/doodle.png";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -144,7 +43,16 @@ const LoginPage = () => {
             navigate(redirectTo);
           }
         } else {
-          setError("Invalid username or password");
+          setError(
+            <div className="relative pl-5 text-left">
+              <AiOutlineCloseCircle
+                size={17}
+                className="absolute top-1 -left-1"
+              />{" "}
+              Your account and/or password is incorrect, <br /> please try
+              again.
+            </div>
+          );
           setPassword("");
         }
       } catch (err) {
@@ -157,48 +65,105 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-sm bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="Username"
-            className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <div className="flex items-center mb-4">
-            <input
-              type="checkbox"
-              id="rememberMe"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-              className="mr-2"
-            />
-            <label htmlFor="rememberMe" className="text-sm">
-              Remember Me
-            </label>
-          </div>
-          {error && (
-            <p className="text-red-500 text-sm text-center mb-4">{error}</p>
-          )}
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition-colors"
+    <div className="flex h-screen bg-slate-400">
+      {/* Left Section with Background Image & Overlay */}
+      <div className="w-3/5 bg-[#1b8057] relative">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${bbg})` }}
+        ></div>
+        {/* Content - Ensure it's above the overlay */}
+        <div className="relative z-10 flex flex-col justify-center items-center h-full text-white px-8">
+          <h1 className="text-5xl mb-5 font-semibold">
+            Welcome to ARDCI Mart Online
+          </h1>
+          <p className="text-lg text-center w-3/4">
+            Discover the best shopping experience at ARDCI Mart! Fresh products,
+            great deals, and seamless online shopping—all in one place.
+          </p>
+          <Link
+            type="button"
+            className="mt-9 text-base font-semibold border-2 border-[#f8bd19] bg-[#f8bd19] hover:bg-[#f8b119] hover:border-[#f8c519] focus:ring-1 focus:ring-yellow-300 rounded-lg px-8 py-2.5 transition-all duration-150 shadow-lg uppercase"
           >
-            Login
-          </button>
-        </form>
+            Sign Up
+          </Link>
+        </div>
+      </div>
+
+      {/* Right Section - Login Form */}
+      <div className="login-right w-2/5 flex flex-col justify-center bg-white">
+        <div className="right-log">
+          <div className="flex flex-col justify-center items-center">
+            <h2 className="text-2xl uppercase mb-5 font-bold font-poppins tracking-wider opacity-80">
+              User Login
+            </h2>
+
+            {/* Error Messsage  */}
+            {error && (
+              <p className="text-red-500 text-sm text-center mb-6 py-3 px-4 border border-red-500 rounded-sm">
+                {error}
+              </p>
+            )}
+
+            {/* Username Input */}
+            <form
+              onSubmit={handleLogin}
+              className="w-full flex flex-col items-center justify-center"
+            >
+              <div className="mb-4 w-full flex flex-col items-center justify-center">
+                <input
+                  type="text"
+                  className="bg-[#c6ffe8] text-gray-900 text-sm  block w-2/4 p-2.5 rounded-full px-7 focus:outline-none focus:drop-shadow"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Password Input */}
+              <div className="mb-2 w-full flex flex-col items-center justify-center">
+                <input
+                  type="password"
+                  className="bg-[#c6ffe8] text-gray-900 text-sm  block w-2/4 p-2.5 rounded-full px-7 focus:outline-none focus:drop-shadow"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Remember Me & Forgot Password */}
+              <div className="mb-8 mt-2 px-3 w-2/4 flex justify-between text-[13px] text-gray-600">
+                {/* Remember Me Checkbox */}
+                <label className="flex items-center hover:cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    id="rememberMe"
+                    checked={rememberMe}
+                    onChange={() => setRememberMe(!rememberMe)}
+                    className="mr-2 accent-green-600 hover:cursor-pointer"
+                  />
+                  Remember Me
+                </label>
+
+                {/* Forgot Password Link */}
+                <Link className="text-green-600 hover:underline hover:cursor-pointer">
+                  Forgot Password?
+                </Link>
+              </div>
+
+              {/* Login Button */}
+              <button
+                type="submit"
+                className="text-white bg-[#1b8057] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 transition-all w-1/4 drop-shadow"
+              >
+                Login
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
